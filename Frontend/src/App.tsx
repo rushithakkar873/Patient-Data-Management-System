@@ -1,13 +1,17 @@
 import './App.css'
-import { Button } from './components/ui/button'
+import { Toaster } from './components/ui/toaster'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 const App = () => {
 
   return (
     <>
-      <Button>
-        Click me
-      </Button>
+      <div className='max-h-screen h-screen p-4 flex flex-col justify-center items-center'>
+        <Login />
+        <Register />
+      </div>
+      <Toaster />
     </>
   )
 }
