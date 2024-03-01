@@ -19,6 +19,36 @@ export type Lifestyle = {
   sleep_time: string;
 };
 
+interface Patient {
+  _id: string;
+  name: string;
+  email: string;
+  gender: string;
+  age: number;
+}
+
+interface CurrentSymptoms {
+  description: string;
+  duration: number;
+  affected_area: string;
+}
+
+interface Prescription {
+  medicine: string[];
+}
+
+export interface MedicalRecord {
+  current_symptoms: CurrentSymptoms;
+  prescription: Prescription;
+  _id: string;
+  patient: Patient;
+  medical_history: MedicalHistory; // Assuming it could be any data type or interface
+  life_style: Lifestyle;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
 export type LayoutProps = {
   children: ReactNode;
 };

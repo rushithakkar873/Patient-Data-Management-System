@@ -78,7 +78,7 @@ const getPatientQueries = async (req, res) => {
 		const queries = await PatientQuery.find({
 			$or: [{ doctor_id: null }, { doctor_id: user._id }],
 		})
-			.populate('patient', 'name email')
+			.populate('patient', 'name email age gender')
 			.populate(
 				'medical_history',
 				'allergies past_medical_history family_medical_history current_medication vaccination_history'
