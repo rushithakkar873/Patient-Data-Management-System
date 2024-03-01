@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const GPTAnalysis = new mongoose.Schema(
+const GPTAnalysisSchema = new mongoose.Schema(
 	{
 		patient_query: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -20,4 +20,6 @@ const GPTAnalysis = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('GPTAnalysis', GPTAnalysis);
+const GPTAnalysis = mongoose.model('GPTAnalysis', GPTAnalysisSchema);
+
+module.exports = GPTAnalysis;

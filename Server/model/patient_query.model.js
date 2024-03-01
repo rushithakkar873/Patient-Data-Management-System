@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const PatientQuery = new mongoose.Schema(
+const PatientQuerySchema = new mongoose.Schema(
 	{
 		patient: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -19,7 +19,7 @@ const PatientQuery = new mongoose.Schema(
 			description: {
 				type: String,
 			},
-			duration: {
+			duration_days: {
 				type: Number,
 			},
 			affected_area: {
@@ -44,4 +44,6 @@ const PatientQuery = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('PatientQuery', PatientQuery);
+const PatientQuery = mongoose.model('PatientQuery', PatientQuerySchema);
+
+module.exports = PatientQuery;

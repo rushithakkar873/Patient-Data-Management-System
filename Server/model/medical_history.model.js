@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MedicalHistory = new mongoose.Schema(
+const MedicalHistorySchema = new mongoose.Schema(
 	{
 		patient: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -20,15 +20,7 @@ const MedicalHistory = new mongoose.Schema(
 			type: String,
 		},
 		vaccination_history: {
-			type: {
-				name: {
-					type: String,
-				},
-				status: {
-					type: String,
-					enum: ['yes', 'no'],
-				},
-			},
+			type: [],
 		},
 	},
 	{
@@ -36,4 +28,6 @@ const MedicalHistory = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('MedicalHistory', MedicalHistory);
+const MedicalHistory = mongoose.model('MedicalHistory', MedicalHistorySchema);
+
+module.exports = MedicalHistory;

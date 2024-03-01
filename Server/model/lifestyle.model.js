@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const LifeStyle = new mongoose.Schema(
+const LifeStyleSchema = new mongoose.Schema(
 	{
 		patient: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +25,6 @@ const LifeStyle = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('LifeStyle', LifeStyle);
+const LifeStyle = mongoose.model('LifeStyle', LifeStyleSchema);
+
+module.exports = LifeStyle;

@@ -1,5 +1,6 @@
 const User = require('../model/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
 const hashPassword = async (password) => {
@@ -8,14 +9,17 @@ const hashPassword = async (password) => {
 };
 
 const comparePassword = async (password, hashedPassword) => {
-	const match = await bcrypt.compare(password, hashedPassword);
+	const match = await bcrypt.compare(
+		password.toString(),
+		hashedPassword.toString()
+	);
 	return match;
 };
 
-const generateToken = (email) => {
+const generateToken = (id) => {
 	const secretKey = process.env.SECRET_KEY;
 	const payload = {
-		email: email,
+		id,
 	};
 	const token = jwt.sign(payload, secretKey, { expiresIn: '1w' });
 	return token;
@@ -56,9 +60,10 @@ const login = async (req, res) => {
 		const { email, password } = req.body;
 		const user = await User.findOne({ email });
 		if (!user) res.status(404).send('user not found');
-		if (comparePassword(user.password, password)) {
+		const compareResult = await comparePassword(user.password, password);
+		if (compareResult) {
 			res.status(200).json({
-				token: generateToken(user.email),
+				token: generateToken(user._id),
 			});
 		} else {
 			res.status(400).send('password does not match');
