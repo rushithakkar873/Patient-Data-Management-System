@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const dbConfig = {
 	url: process.env.MONGODB_URL,
-	options: {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	},
 };
 
 mongoose
