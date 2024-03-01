@@ -1,4 +1,4 @@
-const User = require('../model/user');
+const User = require('../model/user.model');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -23,12 +23,17 @@ const generateToken = (email) => {
 
 const createUser = async (req, res) => {
 	try {
-		const { name, email, password, role } = req.body;
+		const { name, date_of_birth, city, state, gender, email, password, role } =
+			req.body;
 		const new_user = new User({
 			name,
 			email,
 			password: await hashPassword(password),
 			role,
+			gender,
+			date_of_birth,
+			city,
+			state,
 		});
 		await new_user
 			.save()

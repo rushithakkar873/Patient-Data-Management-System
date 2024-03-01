@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 	res.send('good to go');
 });
 
-app.use('/user', require('./routes/user'));
+app.use('/user', require('./routes/user.route'));
 
 app.listen(process.env.PORT, () => {
 	console.log(`Server is running on port ${process.env.PORT}`);
