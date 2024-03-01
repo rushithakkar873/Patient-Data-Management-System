@@ -3,7 +3,11 @@ const GPTAnalysis = require('../model/gpt_analysis.model');
 const LifeStyle = require('../model/lifestyle.model');
 const MedicalHistory = require('../model/medical_history.model');
 const PatientQuery = require('../model/patient_query.model');
-const { addAnalysis, generateAnalysis } = require('./gpt_analysis.controller');
+const {
+	addAnalysis,
+	generateAnalysis,
+	getOpenAIresponse,
+} = require('./gpt_analysis.controller');
 
 const createPatientQuery = async (req, res) => {
 	try {
@@ -53,9 +57,14 @@ const createPatientQuery = async (req, res) => {
 		"a paragraph of caution patient and doctor should be take care of"
 		`;
 		const gemini_recommendation = await generateAnalysis(prompt);
+		const open_ai_recommendation = await getOpenAIresponse(prompt);
+		console.log('\nGemini response\n', gemini_recommendation);
+		console.log('-----------------------------------');
+		console.log('\nOpenAI response\n', open_ai_recommendation);
 		await addAnalysis({
 			patient_query: patient_query._id,
-			response: gemini_recommendation,
+			gemini_response: gemini_recommendation,
+			openai_response: open_ai_recommendation,
 		});
 	} catch (error) {
 		console.log(error);

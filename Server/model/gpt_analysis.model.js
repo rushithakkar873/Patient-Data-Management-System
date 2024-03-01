@@ -7,12 +7,17 @@ const GPTAnalysisSchema = new mongoose.Schema(
 			ref: 'PatientQuery',
 			required: true,
 		},
-		response: {
+		gemini_response: {
 			type: String,
 		},
-		is_accepted: {
-			type: Boolean,
-			default: false,
+		openai_response: {
+			type: String,
+		},
+		custom_doctor_response: {
+			type: String,
+		},
+		accepted: {
+			type: String,
 		},
 	},
 	{
