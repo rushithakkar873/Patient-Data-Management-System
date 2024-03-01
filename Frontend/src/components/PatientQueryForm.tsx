@@ -155,79 +155,111 @@ const PatientQueryForm = () => {
 		}
 	};
 	return (
-		<div>
-			<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-				<Card className='w-full  mx-auto'>
-					<CardHeader>
-						<CardTitle className='text-2xl text-center'>
-							Medical History
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div>
-							<Label htmlFor='allergies'>Allergies</Label>
-							<Input
-								type='text'
-								id='allergies'
-								name='allergies'
-								value={medicalHistory.allergies}
-								onChange={(e) => handleChange(e, 'medicalHistory')}
-								placeholder='Enter your allergies'
-								required
-							/>
-						</div>
-						<div>
-							<Label htmlFor='past_medical_history'>Past Medical History</Label>
-							<Input
-								type='text'
-								id='past_medical_history'
-								name='past_medical_history'
-								value={medicalHistory.past_medical_history}
-								onChange={(e) => handleChange(e, 'medicalHistory')}
-								placeholder='Enter your past medical history'
-								required
-							/>
-						</div>
-						<div>
-							<Label htmlFor='family_medical_history'>
-								Family Medical History
-							</Label>
-							<Input
-								type='text'
-								id='family_medical_history'
-								name='family_medical_history'
-								value={medicalHistory.family_medical_history}
-								onChange={(e) => handleChange(e, 'medicalHistory')}
-								placeholder='Enter your family medical history'
-								required
-							/>
-						</div>
-						<div>
-							<Label htmlFor='current_medication'>Current Medication</Label>
-							<Input
-								type='text'
-								id='current_medication'
-								name='current_medication'
-								value={medicalHistory.current_medication}
-								onChange={(e) => handleChange(e, 'medicalHistory')}
-								placeholder='Enter your current medication'
-								required
-							/>
-						</div>
-						<Label htmlFor='vaccinationHistory'>Vaccination History</Label>
-						{vaccinationHistory.map((vaccination, index) => (
-							<div className='grid grid-cols-2'>
-								<label htmlFor=''>{vaccination.name}</label>
-								<Select
+		<div className=''>
+			<form onSubmit={handleSubmit} className=''>
+				<div className='grid grid-cols-2 gap-6'>
+					<Card className=''>
+						<CardHeader>
+							<CardTitle className='text-2xl text-center'>
+								Medical History
+							</CardTitle>
+						</CardHeader>
+						<CardContent className='flex flex-col space-y-4'>
+							<div>
+								<Label htmlFor='allergies'>Allergies</Label>
+								<Input
+									type='text'
+									id='allergies'
+									name='allergies'
+									value={medicalHistory.allergies}
+									onChange={(e) => handleChange(e, 'medicalHistory')}
+									placeholder='Enter your allergies'
 									required
-									value={vaccination.status}
+								/>
+							</div>
+							<div>
+								<Label htmlFor='past_medical_history'>Past Medical History</Label>
+								<Input
+									type='text'
+									id='past_medical_history'
+									name='past_medical_history'
+									value={medicalHistory.past_medical_history}
+									onChange={(e) => handleChange(e, 'medicalHistory')}
+									placeholder='Enter your past medical history'
+									required
+								/>
+							</div>
+							<div>
+								<Label htmlFor='family_medical_history'>
+									Family Medical History
+								</Label>
+								<Input
+									type='text'
+									id='family_medical_history'
+									name='family_medical_history'
+									value={medicalHistory.family_medical_history}
+									onChange={(e) => handleChange(e, 'medicalHistory')}
+									placeholder='Enter your family medical history'
+									required
+								/>
+							</div>
+							<div>
+								<Label htmlFor='current_medication'>Current Medication</Label>
+								<Input
+									type='text'
+									id='current_medication'
+									name='current_medication'
+									value={medicalHistory.current_medication}
+									onChange={(e) => handleChange(e, 'medicalHistory')}
+									placeholder='Enter your current medication'
+									required
+								/>
+							</div>
+							<Label htmlFor='vaccinationHistory'>Vaccination History</Label>
+							{vaccinationHistory.map((vaccination, index) => (
+								<div className='grid grid-cols-2'>
+									<label htmlFor=''>{vaccination.name}</label>
+									<Select
+										required
+										value={vaccination.status}
+										onValueChange={(selected) => {
+											setVaccinationHistory((prevState) => ({
+												...prevState,
+												[index]: {
+													name: vaccination.name,
+													status: selected,
+												},
+											}));
+										}}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder='Select your choice' />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectGroup>
+												<SelectItem value='yes'>Yes</SelectItem>
+												<SelectItem value='no'>No</SelectItem>
+											</SelectGroup>
+										</SelectContent>
+									</Select>
+								</div>
+							))}
+						</CardContent>
+					</Card>
+					<Card className=''>
+						<CardHeader>
+							<CardTitle className='text-2xl text-center'>Life Style</CardTitle>
+						</CardHeader>
+						<CardContent className='flex flex-col space-y-4'>
+							<div>
+								<label htmlFor=''>Smoking</label>
+								<Select
+									name='smoking'
+									value={lifeStyle.smoking}
 									onValueChange={(selected) => {
-										setVaccinationHistory((prevState) => ({
+										setLifeStyle((prevState) => ({
 											...prevState,
-											[index]: {
-												name: vaccination.name,
-												status: selected,
-											},
+											smoking: selected,
 										}));
 									}}
 								>
@@ -242,91 +274,61 @@ const PatientQueryForm = () => {
 									</SelectContent>
 								</Select>
 							</div>
-						))}
-					</CardContent>
-				</Card>
-				<Card className='w-full  mx-auto'>
-					<CardHeader>
-						<CardTitle className='text-2xl text-center'>Life Style</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div>
-							<label htmlFor=''>Smoking</label>
-							<Select
-								name='smoking'
-								value={lifeStyle.smoking}
-								onValueChange={(selected) => {
-									setLifeStyle((prevState) => ({
-										...prevState,
-										smoking: selected,
-									}));
-								}}
-							>
-								<SelectTrigger>
-									<SelectValue placeholder='Select your choice' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectItem value='yes'>Yes</SelectItem>
-										<SelectItem value='no'>No</SelectItem>
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						</div>
-						<div>
-							<label htmlFor=''>Alcohol</label>
-							<Select
-								name='alcohol'
-								value={lifeStyle.alcohol}
-								onValueChange={(selected) => {
-									setLifeStyle((prevState) => ({
-										...prevState,
-										alcohol: selected,
-									}));
-								}}
-							>
-								<SelectTrigger>
-									<SelectValue placeholder='Select your choice' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectItem value='yes'>Yes</SelectItem>
-										<SelectItem value='no'>No</SelectItem>
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						</div>
-						<div>
-							<label htmlFor=''>Sleep</label>
-							<Select
-								name='sleep_time'
-								value={lifeStyle.sleep_time}
-								onValueChange={(selected) => {
-									setLifeStyle((prevState) => ({
-										...prevState,
-										sleep_time: selected,
-									}));
-								}}
-							>
-								<SelectTrigger>
-									<SelectValue placeholder='Select your choice' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectItem value='less than 6 hour'>
-											Less than 6 Hours
-										</SelectItem>
-										<SelectItem value='6-8 hours'>6 - 8 Hours</SelectItem>
-										<SelectItem value='more than 8 hours'>
-											More than 8 Hours
-										</SelectItem>
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						</div>
-					</CardContent>
-				</Card>
-				<Card className='w-full  mx-auto'>
+							<div>
+								<label htmlFor=''>Alcohol</label>
+								<Select
+									name='alcohol'
+									value={lifeStyle.alcohol}
+									onValueChange={(selected) => {
+										setLifeStyle((prevState) => ({
+											...prevState,
+											alcohol: selected,
+										}));
+									}}
+								>
+									<SelectTrigger>
+										<SelectValue placeholder='Select your choice' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											<SelectItem value='yes'>Yes</SelectItem>
+											<SelectItem value='no'>No</SelectItem>
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</div>
+							<div>
+								<label htmlFor=''>Sleep</label>
+								<Select
+									name='sleep_time'
+									value={lifeStyle.sleep_time}
+									onValueChange={(selected) => {
+										setLifeStyle((prevState) => ({
+											...prevState,
+											sleep_time: selected,
+										}));
+									}}
+								>
+									<SelectTrigger>
+										<SelectValue placeholder='Select your choice' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											<SelectItem value='less than 6 hour'>
+												Less than 6 Hours
+											</SelectItem>
+											<SelectItem value='6-8 hours'>6 - 8 Hours</SelectItem>
+											<SelectItem value='more than 8 hours'>
+												More than 8 Hours
+											</SelectItem>
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+				{/* <Card className='w-full  mx-auto'>
 					<CardHeader>
 						<CardTitle className='text-2xl text-center'>
 							Current Symptoms
@@ -370,12 +372,12 @@ const PatientQueryForm = () => {
 							/>
 						</div>
 					</CardContent>
-				</Card>
-				<Button type='submit' className='w-full' disabled={isLoading}>
+				</Card> */}
+				<Button type='submit' className='mt-6 w-full' disabled={isLoading}>
 					{isLoading ? (
 						<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
 					) : (
-						'Register Your Query'
+						'Update Information'
 					)}
 				</Button>
 			</form>

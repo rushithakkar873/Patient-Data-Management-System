@@ -6,7 +6,7 @@ const PatientLayout: React.FC<LayoutProps> = ({ children }) => {
         <>
             <div className="max-h-screen h-screen flex flex-col">
                 <Navbar />
-                <div className="grow p-6">
+                <div className="grow p-8">
                     {children}
                 </div>
             </div>
