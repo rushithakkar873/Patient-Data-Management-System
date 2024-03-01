@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type MedicalHistory = {
   _id: string;
   allergies: string;
@@ -15,4 +17,8 @@ export type Lifestyle = {
   smoking: string;
   alcohol: string;
   sleep_time: string;
+};
+
+export type LayoutProps = {
+  children: ReactNode;
 };

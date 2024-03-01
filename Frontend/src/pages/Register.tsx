@@ -77,7 +77,7 @@ const Register = () => {
 	};
 
 	return (
-		<Card className='w-full max-w-xl mx-auto'>
+		<Card className='w-2/3'>
 			<CardHeader>
 				<CardTitle className='text-2xl text-center'>Register</CardTitle>
 			</CardHeader>

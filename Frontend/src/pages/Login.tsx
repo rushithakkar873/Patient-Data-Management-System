@@ -56,7 +56,7 @@ const Login = () => {
 
 	return (
 		<>
-			<Card className='w-3/5'>
+			<Card className='w-2/5'>
 				<CardHeader>
 					<CardTitle className='text-2xl text-center'>Login</CardTitle>
 				</CardHeader>
