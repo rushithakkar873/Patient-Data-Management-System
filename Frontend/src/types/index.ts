@@ -23,13 +23,13 @@ interface Patient {
   _id: string;
   name: string;
   email: string;
-  gender: string;
-  age: number;
+  gender?: string;
+  age?: number;
 }
 
 interface CurrentSymptoms {
   description: string;
-  duration: number;
+  duration_days: number;
   affected_area: string;
 }
 
@@ -46,6 +46,7 @@ export interface MedicalRecord {
   life_style: Lifestyle;
   createdAt: string;
   updatedAt: string;
+  doctor_id: Patient;
 }
 
 

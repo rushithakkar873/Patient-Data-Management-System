@@ -27,25 +27,34 @@ const DynamicTable = ({ data, caption, link_path }: QueryTableProps) => {
 				<TableCaption>{caption}</TableCaption>
 				<TableHeader>
 					<TableHead>Sr.</TableHead>
-					{Object.keys(data[0]).map((key, index) => (
-						<TableHead key={index}>{fromSnackCaseToNormal(key)}</TableHead>
-					))}
+					{Object.keys(data[0]).map(
+						(key, index) =>
+							key !== 'id' && (
+								<TableHead key={index}>{fromSnackCaseToNormal(key)}</TableHead>
+							)
+					)}
 				</TableHeader>
 				<TableBody>
-					{data.map((record: any, index: number) => (
-						<TableRow key={record._id}>
-							<Link to={`${link_path}/${record._id}`}>
+					{data.map((record: any, index: number) => {
+						return (
+							<TableRow key={record.id}>
 								<TableCell>{index + 1}</TableCell>
-								{Object.keys(record).map((key, index) => (
-									<TableCell key={index}>
-										{key === 'created_at' || key === 'updated_at'
-											? formatDateTime(record[key])
-											: record[key]}
-									</TableCell>
-								))}
-							</Link>
-						</TableRow>
-					))}
+								{Object.keys(record).map(
+									(key, index) =>
+										key !== 'id' && (
+											<TableCell key={index}>
+												{key === 'created_at' || key === 'updated_at'
+													? formatDateTime(record[key])
+													: record[key]}
+											</TableCell>
+										)
+								)}
+								<TableCell className='text-blue-400'>
+									<Link to={`${link_path}/${record.id}`}>View</Link>
+								</TableCell>
+							</TableRow>
+						);
+					})}
 				</TableBody>
 			</Table>
 		</div>

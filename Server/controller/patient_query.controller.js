@@ -75,15 +75,21 @@ const createPatientQuery = async (req, res) => {
 const getPatientQueries = async (req, res) => {
 	try {
 		const { user } = req;
-		const queries = await PatientQuery.find({
-			$or: [{ doctor_id: null }, { doctor_id: user._id }],
-		})
+		const filters = {};
+		if (user.role === 'patient') {
+			filters.patient = user._id;
+		} else {
+			filters['$or'] = [{ doctor_id: null }, { doctor_id: user._id }];
+		}
+		const queries = await PatientQuery.find(filters)
 			.populate('patient', 'name email age gender')
 			.populate(
 				'medical_history',
 				'allergies past_medical_history family_medical_history current_medication vaccination_history'
 			)
 			.populate('life_style', 'smoking alcohol sleep_time')
+			.populate('doctor_id', 'name email')
+			.sort({ createdAt: -1 })
 			.exec();
 		return res.json(queries);
 	} catch (error) {

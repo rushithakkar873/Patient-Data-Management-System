@@ -3,12 +3,8 @@ import { MedicalRecord } from '@/types';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
-const DoctorQueryTableView = () => {
-	const [data, setData] = React.useState([
-		{
-			patient_name: '',
-		},
-	]);
+const PatientQueryTableView = () => {
+	const [data, setData] = React.useState([{}]);
 
 	useEffect(() => {
 		// http://localhost:8080/patient_query/
@@ -21,11 +17,10 @@ const DoctorQueryTableView = () => {
 					data.map((record: MedicalRecord) => {
 						return {
 							id: record._id,
-							patient_name: record.patient.name,
-							gender: record.patient.gender,
-							age: record.patient.age,
-							current_symptoms: record.current_symptoms.description,
-							current_medication: record.medical_history.current_medication,
+							symptoms: record.current_symptoms.description,
+							duration_days: record.current_symptoms.duration_days,
+							affected_area: record.current_symptoms.affected_area,
+							doctor: record.doctor_id?.name,
 							created_at: record.createdAt,
 						};
 					})
@@ -37,9 +32,13 @@ const DoctorQueryTableView = () => {
 	}, []);
 	return (
 		<div>
-			<DynamicTable data={data} link_path='/view/case' />
+			<DynamicTable
+				data={data}
+				link_path='/view/case'
+				caption='Your recent cases'
+			/>
 		</div>
 	);
 };
 
-export default DoctorQueryTableView;
+export default PatientQueryTableView;
