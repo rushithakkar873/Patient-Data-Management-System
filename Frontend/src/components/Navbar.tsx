@@ -1,23 +1,25 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from './ui/dropdown-menu';
 import { NavbarProps } from '@/types';
 
 const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
+    const location = useLocation();
+    const { pathname } = location;
     return (
         <nav className="bg-black text-white">
             <div className="flex justify-between items-center px-6 py-3">
                 <div className="flex space-x-4 items-center">
                     {/* Logo */}
                     <div>
-                        <Link to={'/patient/dashboard'} className="flex items-center">
+                        <Link to={pathname.includes('patient') ? '/patient/dashboard' : '/doctor/cases'} className="flex items-center">
                             <span className="font-bold text-xl">𝐆𝐏𝐓-𝐌𝐞𝐝𝐀𝐬𝐬𝐢𝐬𝐭</span>
                         </Link>
                     </div>
                     {/* Primary Nav */}
                     <div className="hidden md:flex items-center space-x-1">
                         {navLinks.map((link, index) => (
-                            <Link key={index} to={link.path} className="py-5 px-3 hover:text-gray-300">{link.name}</Link>
+                            <Link key={index} to={link.path} className="py-4 px-3 hover:text-gray-300">{link.name}</Link>
                         ))}
                     </div>
                 </div>
@@ -32,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem>
-                                <Link to={'/patient/profile'}> My Profile </Link>
+                                <Link to={pathname.includes('patient') ? '/patient/profile' : '/doctor/profile'}> My Profile </Link>
                             </DropdownMenuItem>
                             <div className='block md:hidden'>
                                 <DropdownMenuSeparator />

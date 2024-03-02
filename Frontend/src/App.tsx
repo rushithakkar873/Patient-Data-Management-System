@@ -84,7 +84,7 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		path: '/doctor/case-view/:id',
+		path: '/doctor/case-view',
 		element: (
 			<DoctorLayout>
 				<CaseView />
