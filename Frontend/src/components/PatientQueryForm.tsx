@@ -32,11 +32,6 @@ const PatientQueryForm = () => {
 		alcohol: '',
 		sleep_time: '',
 	});
-	const [currentSymptoms, setCurrentSymptoms] = useState({
-		description: '',
-		duration_days: '',
-		affected_area: '',
-	});
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
@@ -62,11 +57,6 @@ const PatientQueryForm = () => {
 			smoking: 'no',
 			alcohol: 'no',
 			sleep_time: '6-8 hours',
-		});
-		setCurrentSymptoms({
-			description: 'Headache',
-			duration_days: '2',
-			affected_area: 'Forehead',
 		});
 	}, []);
 
@@ -105,17 +95,25 @@ const PatientQueryForm = () => {
 		e.preventDefault();
 		setIsLoading(true);
 		axios
-			.post('http://localhost:8080/patient_query/create', {
-				medical_history: {
-					...medicalHistory,
-					vaccination_history: vaccinationHistory,
-				},
-				life_style: lifeStyle,
-				current_symptoms: currentSymptoms,
+			// .post('http://localhost:8080/patient_query/create', {
+			// 	medical_history: {
+			// 		...medicalHistory,
+			// 		vaccination_history: vaccinationHistory,
+			// 	},
+			// 	life_style: lifeStyle,
+			// 	current_symptoms: currentSymptoms,
+			// })
+			.post('http://localhost:8080/medical_history/upsert', {
+				...medicalHistory,
+				vaccination_history: vaccinationHistory,
 			})
-			.then((res) => {
-				console.log(res.data);
-				setIsLoading(false);
+			.then(() => {
+				axios
+					.post('http://localhost:8080/life_style/upsert', lifeStyle)
+					.then((res) => {
+						console.log(res.data);
+						setIsLoading(false);
+					});
 			})
 			.catch((err) => {
 				console.error(err);
@@ -147,13 +145,9 @@ const PatientQueryForm = () => {
 				...prevState,
 				[name]: value,
 			}));
-		} else if (type === 'currentSymptoms') {
-			setCurrentSymptoms((prevState) => ({
-				...prevState,
-				[name]: value,
-			}));
 		}
 	};
+
 	return (
 		<div className=''>
 			<form onSubmit={handleSubmit} className=''>
@@ -178,7 +172,9 @@ const PatientQueryForm = () => {
 								/>
 							</div>
 							<div>
-								<Label htmlFor='past_medical_history'>Past Medical History</Label>
+								<Label htmlFor='past_medical_history'>
+									Past Medical History
+								</Label>
 								<Input
 									type='text'
 									id='past_medical_history'
@@ -216,34 +212,39 @@ const PatientQueryForm = () => {
 								/>
 							</div>
 							<Label htmlFor='vaccinationHistory'>Vaccination History</Label>
-							{vaccinationHistory.map((vaccination, index) => (
-								<div className='grid grid-cols-2'>
-									<label htmlFor=''>{vaccination.name}</label>
-									<Select
-										required
-										value={vaccination.status}
-										onValueChange={(selected) => {
-											setVaccinationHistory((prevState) => ({
-												...prevState,
-												[index]: {
-													name: vaccination.name,
-													status: selected,
-												},
-											}));
-										}}
-									>
-										<SelectTrigger>
-											<SelectValue placeholder='Select your choice' />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												<SelectItem value='yes'>Yes</SelectItem>
-												<SelectItem value='no'>No</SelectItem>
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-								</div>
-							))}
+							{vaccinationHistory &&
+								vaccinationHistory.map((vaccination) => (
+									<div className='grid grid-cols-2'>
+										<label htmlFor=''>{vaccination.name}</label>
+										<Select
+											required
+											value={vaccination.status}
+											onValueChange={(selected: string) => {
+												const newData =
+													vaccinationHistory.map((old) => {
+														if (old.name === vaccination.name) {
+															return {
+																name: old.name,
+																status: selected,
+															};
+														}
+														return old;
+													}) || [];
+												setVaccinationHistory(newData);
+											}}
+										>
+											<SelectTrigger>
+												<SelectValue placeholder='Select your choice' />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectGroup>
+													<SelectItem value='yes'>Yes</SelectItem>
+													<SelectItem value='no'>No</SelectItem>
+												</SelectGroup>
+											</SelectContent>
+										</Select>
+									</div>
+								))}
 						</CardContent>
 					</Card>
 					<Card className=''>

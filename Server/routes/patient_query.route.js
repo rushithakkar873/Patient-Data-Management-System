@@ -7,5 +7,6 @@ const {
 const router = express.Router();
 
 router.post('/create', verifyToken, createPatientQuery);
-router.get('/', verifyToken, getPatientQueries);
+router.get('/:id', verifyToken, getPatientQueries);
+
 module.exports = router;

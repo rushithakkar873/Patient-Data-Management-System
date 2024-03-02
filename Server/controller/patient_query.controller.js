@@ -74,6 +74,15 @@ const createPatientQuery = async (req, res) => {
 
 const getPatientQueries = async (req, res) => {
 	try {
+		const { id } = req.params;
+		if (id != 'all') {
+			const data = await PatientQuery.findById(id);
+			const ai_response = await GPTAnalysis.findOne({ patient_query: data.id });
+			return res.json({
+				data,
+				ai_response,
+			});
+		}
 		const { user } = req;
 		const filters = {};
 		if (user.role === 'patient') {
@@ -98,7 +107,16 @@ const getPatientQueries = async (req, res) => {
 	}
 };
 
+const getPatientQuery = async (req, res) => {
+	try {
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Internal server error');
+	}
+};
+
 module.exports = {
 	createPatientQuery,
 	getPatientQueries,
+	getPatientQuery,
 };
