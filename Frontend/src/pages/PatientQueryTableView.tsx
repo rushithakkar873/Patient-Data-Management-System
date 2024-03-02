@@ -33,7 +33,7 @@ const PatientQueryTableView = () => {
 		<div>
 			<DynamicTable
 				data={data}
-				link_path='/view/case'
+				link_path='/patient/case-view'
 				caption='Your recent cases'
 			/>
 		</div>

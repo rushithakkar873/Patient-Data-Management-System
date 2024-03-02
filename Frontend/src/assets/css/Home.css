@@ -1,0 +1,25 @@
+/* Full-page gradient */
+.bg-gradient-main {
+  background: linear-gradient(to bottom, #000000 0%, #2b2b2b 100%);
+}
+
+.typing-animation {
+    text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3.5s;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Opacity for header and footer to distinguish them from the main content */
+.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -13,7 +13,7 @@ const DoctorQueryTableView = () => {
 	useEffect(() => {
 		// http://localhost:8080/patient_query/
 		axios
-			.get('http://localhost:8080/patient_query/')
+			.get('http://localhost:8080/patient_query/all')
 			.then((response) => {
 				const data = response.data;
 				setData(
@@ -36,7 +36,7 @@ const DoctorQueryTableView = () => {
 	}, []);
 	return (
 		<div>
-			<DynamicTable data={data} link_path='/view/case' />
+			<DynamicTable data={data} link_path='/doctor/case-view' />
 		</div>
 	);
 };
