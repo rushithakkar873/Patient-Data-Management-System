@@ -56,3 +56,26 @@ export type LayoutProps = {
 export type NavbarProps = {
   navLinks: Array<{name: string, path: string}>
 }
+
+export type GlobalState = {
+  patientProfile: {
+    name: string;
+    date_of_birth: Date | null;
+    age: number | null;
+    gender: 'male' | 'female' | 'other' | null;
+    city: string;
+    state: string;
+    email: string;
+    role: string;
+  };
+  token: string | null;
+  isLoggedIn: boolean;
+  medicalHistory: MedicalHistory;
+  lifestyle: Lifestyle;
+}
+
+export type GlobalStateAction = {
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload: any;
+}
