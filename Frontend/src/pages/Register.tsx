@@ -15,8 +15,10 @@ import {
 import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/utils/Icons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -59,6 +61,7 @@ const Register = () => {
 				});
 				if (res.status === 201) {
 					// todo redirect to login page
+					navigate('/auth/login');
 				}
 			})
 			.catch((err) => {
@@ -214,7 +217,7 @@ const Register = () => {
 							{isLoading ? (
 								<Icons.spinner className='mr-2 h-4 w-4 animate-spin' />
 							) : (
-								'Register your query'
+								'Register'
 							)}
 						</Button>
 					</div>

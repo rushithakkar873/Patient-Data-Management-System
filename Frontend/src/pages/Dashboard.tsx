@@ -1,6 +1,6 @@
 import { Avatar, AvatarImage, AvatarFallback } from '../components/ui/avatar';
 import { Button } from '../components/ui/button';
-import { Card, CardTitle } from '../components/ui/card';
+import { Card, CardContent, CardTitle } from '../components/ui/card';
 import {
 	Tabs,
 	TabsList,
@@ -20,8 +20,11 @@ import { Label } from '@radix-ui/react-label';
 import { ChangeEvent, useState } from 'react';
 import { Input } from '../components/ui/input';
 import axios from 'axios';
+import { useGlobalState } from '@/context/useGlobalState';
+import PatientQueryTableView from './PatientQueryTableView';
 
 const Dashboard = () => {
+	const { state } = useGlobalState();
 	const [currentSymptoms, setCurrentSymptoms] = useState({
 		description: '',
 		duration_days: '',
@@ -29,29 +32,8 @@ const Dashboard = () => {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	// todo: fetch this from global state
-	const lifeStyleData = {
-		smoking: 'no',
-		alcohol: 'yes',
-		sleep_time: '6-8 hours',
-	};
-
-	const medicalHistoryData = {
-		allergies: 'Pollen',
-		past_medical_history: 'Asthma',
-		family_medical_history: 'Heart Disease',
-		current_medication: 'Inhaler',
-		vaccination_history: [
-			{
-				name: 'Covid - 19',
-				status: 'yes',
-			},
-			{
-				name: 'Flu',
-				status: 'no',
-			},
-		],
-	};
+	const lifeStyleData = state.lifestyle;
+	const medicalHistoryData = state.medicalHistory;
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setCurrentSymptoms((prev) => ({
@@ -148,10 +130,12 @@ const Dashboard = () => {
 								<AvatarImage src='https://github.com/shadcn.png' />
 								<AvatarFallback>P</AvatarFallback>
 							</Avatar>
-							<CardTitle className='text-lg'>Welcome, Username!</CardTitle>
+							<CardTitle className='text-lg'>
+								Welcome {state.patientProfile.name} !
+							</CardTitle>
 							<div>
 								<p>Contact: +91 99999 99999</p>
-								<p>Mail: user@mail.com</p>
+								<p>Mail: {state.patientProfile.email}</p>
 							</div>
 						</Card>
 					</div>
@@ -190,7 +174,13 @@ const Dashboard = () => {
 											<span className='font-semibold'>
 												Vaccination History:
 											</span>{' '}
-											{medicalHistoryData.vaccination_history.join(', ')}
+											{medicalHistoryData.vaccination_history.map((vac) => (
+												<span
+													className={`${vac.status === 'no' && 'line-through	'}`}
+												>
+													{vac.name},{' '}
+												</span>
+											))}
 										</p>
 									</div>
 								</TabsContent>
@@ -217,6 +207,9 @@ const Dashboard = () => {
 				<div className='row-span-1'>
 					<Card className='h-full px-6 py-6'>
 						<CardTitle className='text-lg'>Patient Cases History</CardTitle>
+						<CardContent>
+							<PatientQueryTableView />
+						</CardContent>
 					</Card>
 				</div>
 			</div>

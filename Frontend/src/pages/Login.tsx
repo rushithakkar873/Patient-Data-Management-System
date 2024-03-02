@@ -6,8 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/utils/Icons';
 import { toast } from '@/components/ui/use-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -32,9 +34,17 @@ const Login = () => {
 					variant: 'default',
 					description: 'Login successful.',
 				});
-				if (res.status === 201) {
+				if (res.status === 200) {
 					localStorage.setItem('token', res.data.token);
 					// todo redirect to some page
+					const role = res.data.user.role;
+					if (role === 'patient') {
+						navigate('/patient/dashboard');
+					} else if (role === 'doctor') {
+						navigate('/doctor/dashboard');
+					} else {
+						navigate('/');
+					}
 				}
 			})
 			.catch((err) => {
@@ -43,15 +53,6 @@ const Login = () => {
 					description: err.response.data,
 				});
 			});
-		setTimeout(() => {
-			setIsLoading(false);
-			// You can implement success or error handling here
-			// For example, showing a toast notification
-			toast({
-				variant: 'default',
-				description: 'Login successful.',
-			});
-		}, 3000);
 	};
 
 	return (

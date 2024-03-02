@@ -14,7 +14,8 @@ import {
 import { Icons } from '@/utils/Icons';
 import axios from 'axios';
 
-const PatientQueryForm = () => {
+const PatientMedicalAndLifeStyleForm = () => {
+	//todo: use global state here
 	const [medicalHistory, setMedicalHistory] = useState({
 		allergies: '',
 		past_medical_history: '',
@@ -31,6 +32,11 @@ const PatientQueryForm = () => {
 		smoking: '',
 		alcohol: '',
 		sleep_time: '',
+	});
+	const [currentSymptoms, setCurrentSymptoms] = useState({
+		description: '',
+		duration_days: '',
+		affected_area: '',
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -57,6 +63,11 @@ const PatientQueryForm = () => {
 			smoking: 'no',
 			alcohol: 'no',
 			sleep_time: '6-8 hours',
+		});
+		setCurrentSymptoms({
+			description: 'Headache',
+			duration_days: '2',
+			affected_area: 'Forehead',
 		});
 	}, []);
 
@@ -95,25 +106,16 @@ const PatientQueryForm = () => {
 		e.preventDefault();
 		setIsLoading(true);
 		axios
-			// .post('http://localhost:8080/patient_query/create', {
-			// 	medical_history: {
-			// 		...medicalHistory,
-			// 		vaccination_history: vaccinationHistory,
-			// 	},
-			// 	life_style: lifeStyle,
-			// 	current_symptoms: currentSymptoms,
-			// })
-			.post('http://localhost:8080/medical_history/upsert', {
-				...medicalHistory,
-				vaccination_history: vaccinationHistory,
+			.post('http://localhost:8080/patient_query/create', {
+				medical_history: {
+					...medicalHistory,
+					vaccination_history: vaccinationHistory,
+				},
+				life_style: lifeStyle,
+				current_symptoms: currentSymptoms,
 			})
-			.then(() => {
-				axios
-					.post('http://localhost:8080/life_style/upsert', lifeStyle)
-					.then((res) => {
-						console.log(res.data);
-						setIsLoading(false);
-					});
+			.then((res) => {
+				setIsLoading(false);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -145,9 +147,13 @@ const PatientQueryForm = () => {
 				...prevState,
 				[name]: value,
 			}));
+		} else if (type === 'currentSymptoms') {
+			setCurrentSymptoms((prevState) => ({
+				...prevState,
+				[name]: value,
+			}));
 		}
 	};
-
 	return (
 		<div className=''>
 			<form onSubmit={handleSubmit} className=''>
@@ -212,39 +218,37 @@ const PatientQueryForm = () => {
 								/>
 							</div>
 							<Label htmlFor='vaccinationHistory'>Vaccination History</Label>
-							{vaccinationHistory &&
-								vaccinationHistory.map((vaccination) => (
-									<div className='grid grid-cols-2'>
-										<label htmlFor=''>{vaccination.name}</label>
-										<Select
-											required
-											value={vaccination.status}
-											onValueChange={(selected: string) => {
-												const newData =
-													vaccinationHistory.map((old) => {
-														if (old.name === vaccination.name) {
-															return {
-																name: old.name,
-																status: selected,
-															};
-														}
-														return old;
-													}) || [];
-												setVaccinationHistory(newData);
-											}}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder='Select your choice' />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectGroup>
-													<SelectItem value='yes'>Yes</SelectItem>
-													<SelectItem value='no'>No</SelectItem>
-												</SelectGroup>
-											</SelectContent>
-										</Select>
-									</div>
-								))}
+							{vaccinationHistory.map((vaccination) => (
+								<div className='grid grid-cols-2'>
+									<label htmlFor=''>{vaccination.name}</label>
+									<Select
+										required
+										value={vaccination.status}
+										onValueChange={(selected) => {
+											const newData = vaccinationHistory.map((hs) => {
+												if (hs.name === vaccination.name) {
+													return {
+														name: vaccination.name,
+														status: selected,
+													};
+												}
+												return hs;
+											});
+											setVaccinationHistory(newData);
+										}}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder='Select your choice' />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectGroup>
+												<SelectItem value='yes'>Yes</SelectItem>
+												<SelectItem value='no'>No</SelectItem>
+											</SelectGroup>
+										</SelectContent>
+									</Select>
+								</div>
+							))}
 						</CardContent>
 					</Card>
 					<Card className=''>
@@ -386,4 +390,4 @@ const PatientQueryForm = () => {
 	);
 };
 
-export default PatientQueryForm;
+export default PatientMedicalAndLifeStyleForm;

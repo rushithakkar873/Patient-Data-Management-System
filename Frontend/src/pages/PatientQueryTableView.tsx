@@ -9,9 +9,8 @@ const PatientQueryTableView = () => {
 	useEffect(() => {
 		// http://localhost:8080/patient_query/
 		axios
-			.get('http://localhost:8080/patient_query/')
+			.get('http://localhost:8080/patient_query/all')
 			.then((response) => {
-				console.log(response.data);
 				const data = response.data;
 				setData(
 					data.map((record: MedicalRecord) => {

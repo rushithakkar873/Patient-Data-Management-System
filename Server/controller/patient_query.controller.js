@@ -76,7 +76,15 @@ const getPatientQueries = async (req, res) => {
 	try {
 		const { id } = req.params;
 		if (id != 'all') {
-			const data = await PatientQuery.findById(id);
+			const data = await PatientQuery.findById(id)
+				.populate('patient', 'name email age gender')
+				.populate(
+					'medical_history',
+					'allergies past_medical_history family_medical_history current_medication vaccination_history'
+				)
+				.populate('life_style', 'smoking alcohol sleep_time')
+				.populate('doctor_id', 'name email')
+				.sort({ createdAt: -1 });
 			const ai_response = await GPTAnalysis.findOne({ patient_query: data.id });
 			return res.json({
 				data,

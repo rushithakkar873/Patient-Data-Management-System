@@ -45,7 +45,17 @@ export const globalStateReducer = (state: GlobalState, action: GlobalStateAction
         case ActionTypes.UPDATE_PATIENT_PROFILE:
             return {
                 ...state,
-                patientProfile: { ...state.patientProfile, ...action.payload },
+                patientProfile: action.payload,
+            };
+        case ActionTypes.UPDATE_MEDICAL_HISTORY:
+            return {
+                ...state,
+                medicalHistory: action.payload,
+            };
+        case ActionTypes.UPDATE_LIFE_STYLE:
+            return {
+                ...state,
+                lifeStyle: action.payload,
             };
 
         default:

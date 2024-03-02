@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
 		const new_user = new User({
 			name,
 			email,
-			password: await hashPassword(password),
+			password,
 			role,
 			gender,
 			date_of_birth,
@@ -47,6 +47,7 @@ const createUser = async (req, res) => {
 					.send(`${user.role} created successfully for email ${user.email}`);
 			})
 			.catch((error) => {
+				console.log(error);
 				throw new Error('Error creating user');
 			});
 	} catch (error) {
@@ -60,10 +61,11 @@ const login = async (req, res) => {
 		const { email, password } = req.body;
 		const user = await User.findOne({ email });
 		if (!user) res.status(404).send('user not found');
-		const compareResult = await comparePassword(user.password, password);
+		const compareResult = password === user.password;
 		if (compareResult) {
 			res.status(200).json({
 				token: generateToken(user._id),
+				user,
 			});
 		} else {
 			res.status(400).send('password does not match');
@@ -74,7 +76,23 @@ const login = async (req, res) => {
 	}
 };
 
+const fetchUserData = async (req, res) => {
+	try {
+		let { id } = req.params;
+		if (id === 'me') {
+			id = req.user._id;
+		}
+		const data = await User.findById(id);
+		data.password = undefined;
+		return res.json({ data });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send('Internal server error');
+	}
+};
+
 module.exports = {
 	createUser,
 	login,
+	fetchUserData,
 };
