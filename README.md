@@ -20,8 +20,6 @@ GPT-MediAssistant is a patient data management system designed to enhance the in
 - Fully functional web application with an intuitive user interface.
 - Documentation for installation, usage, and additional configurations.
 
-### Backend README.md
-
 ## Project: GPT-MediAssistant Backend
 
 **Description:**  
