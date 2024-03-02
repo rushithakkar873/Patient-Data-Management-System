@@ -14,8 +14,15 @@ import DoctorLayout from './layout/DoctorLayout';
 import CaseView from './pages/CaseView';
 import CasesHistory from './pages/CasesHistory';
 import CasesList from './pages/CasesList';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
+	{
+		path: '/',
+		element: (
+			<Home />
+		),
+	},
 	{
 		path: '/auth/signup',
 		element: (
