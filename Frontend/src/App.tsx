@@ -7,8 +7,13 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from "./pages/Dashboard";
 import MedicalInformation from "./pages/MedicalInformation";
-import CasesHistory from "./pages/CasesHistory";
 import PatientProfile from "./pages/PatientProfile";
+import axios from "axios";
+import { useEffect } from "react";
+import DoctorLayout from "./layout/DoctorLayout";
+import CaseView from "./pages/CaseView";
+import CasesHistory from "./pages/CasesHistory";
+import CasesList from "./pages/CasesList";
 
 
 const router = createBrowserRouter([
@@ -44,21 +49,29 @@ const router = createBrowserRouter([
       email: "rushi@mail.com",
       role: "Patient"
     }} /></PatientLayout>,
-  }
+  },
+  {
+    path: "/doctor/cases",
+    element: <DoctorLayout><CasesList /></DoctorLayout>,
+  },
+  {
+    path: "/doctor/case-view/:id",
+    element: <DoctorLayout><CaseView /></DoctorLayout>,
+  },
 ]);
 
 const App = () => {
-	useEffect(() => {
-		axios.defaults.headers.common[
-			'Authorization'
-		] = `Token ${localStorage.getItem('token')}`;
-	}, []);
-	return (
-		<>
-			<RouterProvider router={router} />
-			<Toaster />
-		</>
-	);
+  useEffect(() => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Token ${localStorage.getItem('token')}`;
+  }, []);
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
+  );
 };
 
 export default App;

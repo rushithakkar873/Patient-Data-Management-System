@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from './ui/dropdown-menu';
+import { NavbarProps } from '@/types';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
     return (
         <nav className="bg-black text-white">
             <div className="flex justify-between items-center px-6 py-3">
@@ -15,9 +16,9 @@ const Navbar: React.FC = () => {
                     </div>
                     {/* Primary Nav */}
                     <div className="hidden md:flex items-center space-x-1">
-                        <Link to={'/patient/dashboard'} className="py-5 px-3 hover:text-gray-300">Dashboard</Link>
-                        <Link to={'/patient/cases-history'} className="py-5 px-3 hover:text-gray-300">Cases History</Link>
-                        <Link to={'/patient/medical-info'} className="py-5 px-3 hover:text-gray-300">Medical Information</Link>
+                        {navLinks.map((link, index) => (
+                            <Link key={index} to={link.path} className="py-5 px-3 hover:text-gray-300">{link.name}</Link>
+                        ))}
                     </div>
                 </div>
 
@@ -35,15 +36,11 @@ const Navbar: React.FC = () => {
                             </DropdownMenuItem>
                             <div className='block md:hidden'>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <Link to={'/patient/dashboard'}>Dashboard</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Link to={'/patient/cases-history'}>Cases History</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Link to={'/patient/medical-info'}>Medical Information</Link>
-                                </DropdownMenuItem>
+                                {navLinks.map((link, index) => (
+                                    <DropdownMenuItem key={index}>
+                                        <Link to={link.path}>{link.name}</Link>
+                                    </DropdownMenuItem>
+                                ))}
                                 <DropdownMenuSeparator />
                             </div>
                             <DropdownMenuItem className='text-red-500'>Logout</DropdownMenuItem>

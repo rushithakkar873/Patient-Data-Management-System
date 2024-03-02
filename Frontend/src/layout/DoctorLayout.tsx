@@ -1,12 +1,11 @@
 import Navbar from "@/components/Navbar";
 import { LayoutProps } from "@/types";
 
-const PatientLayout: React.FC<LayoutProps> = ({ children }) => {
+const DoctorLayout: React.FC<LayoutProps> = ({ children }) => {
     const navLinks = [
-        { name: 'Dashboard', path: '/patient/dashboard' },
-        { name: 'Cases History', path: '/patient/cases-history' },
-        { name: 'Medical Information', path: '/patient/medical-info' },
-    ];
+        {name: "Active Cases", path: "/doctor/active-cases"},
+        {name: "Case", path: "/doctor/active-cases"}
+    ]
     return (
         <>
             <div className="max-h-screen h-screen flex flex-col">
@@ -19,4 +18,4 @@ const PatientLayout: React.FC<LayoutProps> = ({ children }) => {
     );
 }
 
-export default PatientLayout;
+export default DoctorLayout;

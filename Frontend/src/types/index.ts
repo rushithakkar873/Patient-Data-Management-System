@@ -49,7 +49,10 @@ export interface MedicalRecord {
   doctor_id: Patient;
 }
 
-
 export type LayoutProps = {
   children: ReactNode;
 };
+
+export type NavbarProps = {
+  navLinks: Array<{name: string, path: string}>
+}
