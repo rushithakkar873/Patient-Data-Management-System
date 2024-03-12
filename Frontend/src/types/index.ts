@@ -54,7 +54,7 @@ export type LayoutProps = {
 };
 
 export type NavbarProps = {
-  navLinks: Array<{name: string, path: string}>
+  navLinks: Array<{ name: string, path: string }>
 }
 
 export type GlobalState = {
@@ -71,7 +71,7 @@ export type GlobalState = {
   token: string | null;
   isLoggedIn: boolean;
   medicalHistory: MedicalHistory;
-  lifestyle: Lifestyle;
+  lifeStyle: Lifestyle;
 }
 
 export type GlobalStateAction = {

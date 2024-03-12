@@ -22,7 +22,7 @@ export const initialState: GlobalState = {
         current_medication: '',
         vaccination_history: []
     },
-    lifestyle: {
+    lifeStyle: {
         _id: '',
         smoking: '',
         alcohol: '',

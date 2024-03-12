@@ -32,7 +32,9 @@ const Dashboard = () => {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	const lifeStyleData = state.lifestyle;
+	console.log(state);
+
+	const lifeStyleData = state.lifeStyle;
 	const medicalHistoryData = state.medicalHistory;
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +57,8 @@ const Dashboard = () => {
 			alert('Case created successfully');
 		}, 3000);
 	};
+
+	console.log(lifeStyleData);
 
 	return (
 		<div className='h-full flex flex-col space-y-4'>
@@ -133,8 +137,10 @@ const Dashboard = () => {
 							<CardTitle className='text-lg'>
 								Welcome {state.patientProfile.name} !
 							</CardTitle>
-							<div>
-								<p>Contact: +91 99999 99999</p>
+							<div className='text-center'>
+								<p>
+									{state.patientProfile.city}, {state.patientProfile.state}
+								</p>
 								<p>Mail: {state.patientProfile.email}</p>
 							</div>
 						</Card>
@@ -152,29 +158,29 @@ const Dashboard = () => {
 									<div className='grid grid-cols-2 gap-2'>
 										<p>
 											<span className='font-semibold'>Allergies:</span>{' '}
-											{medicalHistoryData.allergies}
+											{medicalHistoryData?.allergies}
 										</p>
 										<p>
 											<span className='font-semibold'>
 												Past Medical History:
 											</span>{' '}
-											{medicalHistoryData.past_medical_history}
+											{medicalHistoryData?.past_medical_history}
 										</p>
 										<p>
 											<span className='font-semibold'>
 												Family Medical History:
 											</span>{' '}
-											{medicalHistoryData.family_medical_history}
+											{medicalHistoryData?.family_medical_history}
 										</p>
 										<p>
 											<span className='font-semibold'>Current Medication:</span>{' '}
-											{medicalHistoryData.current_medication}
+											{medicalHistoryData?.current_medication}
 										</p>
 										<p>
 											<span className='font-semibold'>
 												Vaccination History:
 											</span>{' '}
-											{medicalHistoryData.vaccination_history.map((vac) => (
+											{medicalHistoryData?.vaccination_history.map((vac) => (
 												<span
 													className={`${vac.status === 'no' && 'line-through	'}`}
 												>
@@ -188,15 +194,15 @@ const Dashboard = () => {
 									<div className='flex flex-col space-y-2'>
 										<p>
 											<span className='font-semibold'>Smoking:</span>{' '}
-											{lifeStyleData.smoking}
+											{lifeStyleData?.smoking}
 										</p>
 										<p>
 											<span className='font-semibold'>Alcohol:</span>{' '}
-											{lifeStyleData.alcohol}
+											{lifeStyleData?.alcohol}
 										</p>
 										<p>
 											<span className='font-semibold'>Sleep Time:</span>{' '}
-											{lifeStyleData.sleep_time}
+											{lifeStyleData?.sleep_time}
 										</p>
 									</div>
 								</TabsContent>

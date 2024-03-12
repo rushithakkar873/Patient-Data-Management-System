@@ -13,9 +13,10 @@ import { useEffect } from 'react';
 import DoctorLayout from './layout/DoctorLayout';
 import CaseView from './pages/CaseView';
 import CasesHistory from './pages/CasesHistory';
-import CasesList from './pages/CasesList';
 import Home from './pages/Home';
 import DoctorQueryTableView from './pages/DoctorQueryTableView';
+import { useGlobalState } from './context/useGlobalState';
+import { ActionTypes } from './context/actionTypes';
 
 const router = createBrowserRouter([
 	{
@@ -97,11 +98,48 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+	const { state, dispatch } = useGlobalState();
 	useEffect(() => {
 		axios.defaults.headers.common[
 			'Authorization'
 		] = `Token ${localStorage.getItem('token')}`;
 	}, []);
+
+	useEffect(() => {
+		axios.defaults.headers.common[
+			'Authorization'
+		] = `Token ${localStorage.getItem('token')}`;
+
+		const fetchMyProfile = async () => {
+			await axios.get('http://localhost:8080/user/me').then((res) => {
+				const user = res.data.data;
+				dispatch({ type: ActionTypes.SET_PATIENT_PROFILE, payload: user });
+			});
+		};
+
+		const getMedicalHistoryAndLifeStyle = async () => {
+			axios
+				.get('http://localhost:8080/medical_history/mine')
+				.then((res) => {
+					const data = res.data;
+					dispatch({ type: ActionTypes.UPDATE_MEDICAL_HISTORY, payload: data });
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+			axios
+				.get('http://localhost:8080/life_style/mine')
+				.then((res) => {
+					const data = res.data;
+					dispatch({ type: ActionTypes.UPDATE_LIFE_STYLE, payload: data });
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		};
+		fetchMyProfile();
+		getMedicalHistoryAndLifeStyle();
+	}, [dispatch]);
 	return (
 		<>
 			<RouterProvider router={router} />

@@ -33,46 +33,9 @@ const PatientMedicalAndLifeStyleForm = () => {
 		alcohol: '',
 		sleep_time: '',
 	});
-	const [currentSymptoms, setCurrentSymptoms] = useState({
-		description: '',
-		duration_days: '',
-		affected_area: '',
-	});
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		return;
-		// set some dummy data
-		setMedicalHistory({
-			allergies: 'Peanuts',
-			past_medical_history: 'None',
-			family_medical_history: 'None',
-			current_medication: 'None',
-		});
-		setVaccinationHistory([
-			{
-				name: 'Polio',
-				status: 'yes',
-			},
-			{
-				name: 'Tetanus',
-				status: 'no',
-			},
-		]);
-		setLifeStyle({
-			smoking: 'no',
-			alcohol: 'no',
-			sleep_time: '6-8 hours',
-		});
-		setCurrentSymptoms({
-			description: 'Headache',
-			duration_days: '2',
-			affected_area: 'Forehead',
-		});
-	}, []);
-
-	useEffect(() => {
-		// http://localhost:8080/medical_history/mine
 		axios
 			.get('http://localhost:8080/medical_history/mine')
 			.then((res) => {
@@ -87,7 +50,6 @@ const PatientMedicalAndLifeStyleForm = () => {
 			.catch((err) => {
 				console.error(err);
 			});
-		// http://localhost:8080/life_style/mine
 		axios
 			.get('http://localhost:8080/life_style/mine')
 			.then((res) => {
@@ -106,15 +68,12 @@ const PatientMedicalAndLifeStyleForm = () => {
 		e.preventDefault();
 		setIsLoading(true);
 		axios
-			.post('http://localhost:8080/patient_query/create', {
-				medical_history: {
-					...medicalHistory,
-					vaccination_history: vaccinationHistory,
-				},
-				life_style: lifeStyle,
-				current_symptoms: currentSymptoms,
+			.post('http://localhost:8080/medical_history/upsert', {
+				...medicalHistory,
+				vaccination_history: vaccinationHistory,
 			})
-			.then((res) => {
+			.then(() => {
+				axios.post('http://localhost:8080/life_style/upsert', lifeStyle);
 				setIsLoading(false);
 			})
 			.catch((err) => {
@@ -144,11 +103,6 @@ const PatientMedicalAndLifeStyleForm = () => {
 			}));
 		} else if (type === 'lifeStyle') {
 			setLifeStyle((prevState) => ({
-				...prevState,
-				[name]: value,
-			}));
-		} else if (type === 'currentSymptoms') {
-			setCurrentSymptoms((prevState) => ({
 				...prevState,
 				[name]: value,
 			}));
